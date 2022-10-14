@@ -1,11 +1,21 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, StatusBar } from "react-native";
+import Navigation from "./navigation";
+import FlashMessage from "react-native-flash-message";
+import { COLORS } from "./utils/Colors";
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
+      <StatusBar
+        animated={true}
+        backgroundColor={COLORS.primary}
+        barStyle={"light-content"}
+        showHideTransition={"fade"}
+      />
+
+      <Navigation />
+
+      <FlashMessage position="top" />
     </View>
   );
 }
@@ -13,8 +23,5 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });
