@@ -11,7 +11,7 @@ import { AuthContext } from "../../navigation/AuthProvider";
 
 const Login = () => {
   const { login } = useContext(AuthContext);
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isConnecting, setIsConnecting] = useState(false);
