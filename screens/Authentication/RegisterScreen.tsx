@@ -17,7 +17,7 @@ import { AuthContext } from "../../navigation/AuthProvider";
 import { showMessage } from "react-native-flash-message";
 
 const RegisterScreen = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
