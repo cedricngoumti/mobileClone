@@ -75,7 +75,7 @@ const Login = () => {
           <Button title="Connexion" onPress={() => signIn()} />
         </View>
         <TouchableOpacity onPress={() => navigation.navigate("Register")}>
-          <Text style={styles.forgotButton}>je n'ai pas encore de compte!</Text>
+          <Text style={styles.forgotButton}>je n'ai pas encore de compte?</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.bottom}>
