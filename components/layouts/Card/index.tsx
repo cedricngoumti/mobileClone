@@ -10,7 +10,6 @@ interface Props {
 }
 
 const Card = ({ name, image }: Props) => {
-  const { logout } = useContext(AuthContext);
   return (
     <TouchableOpacity
       style={{
@@ -22,11 +21,11 @@ const Card = ({ name, image }: Props) => {
         justifyContent: "center",
         alignItems: "center",
       }}
-      onPress={() => logout()}
+      onPress={() => null}
     >
       <View
         style={{
-          width: "100%",
+          width: 100,
           height: 100,
           borderRadius: 10,
           backgroundColor: COLORS.white,
@@ -42,8 +41,10 @@ const Card = ({ name, image }: Props) => {
             width: "100%",
             height: 100,
             borderRadius: 10,
+            borderColor: COLORS.primary,
+            borderWidth: 0.3,
           }}
-          resizeMode="contain"
+          resizeMode="cover"
         />
       </View>
       <Text style={styles.productName}>{name}</Text>

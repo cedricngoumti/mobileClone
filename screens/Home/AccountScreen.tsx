@@ -1,9 +1,12 @@
 import { StyleSheet, Text, View, ScrollView } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import Header from "../../components/layouts/Header";
 import ListItem from "../../components/layouts/ListItem";
+import Button from "../../components/elements/Buttons";
+import { AuthContext } from "../../navigation/AuthProvider";
 
 const AccountScreen = () => {
+  const { logout } = useContext(AuthContext);
   return (
     <View>
       <Header name="Compte" />
@@ -13,7 +16,7 @@ const AccountScreen = () => {
             padding: 10,
           }}
         >
-          <ListItem name="Profil" icon={"user"} rightIcon={"right"} />
+          <Button title="Sign out" onPress={() => logout()} />
         </View>
       </ScrollView>
     </View>
