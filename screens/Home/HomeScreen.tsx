@@ -4,10 +4,11 @@ import Header from "../../components/layouts/Header";
 import Card from "../../components/layouts/Card";
 import { COLORS } from "../../utils/Colors";
 import Resume from "../../components/layouts/Resume";
+import MainContainer from "../../components/layouts/MainContainer";
 
 const HomeScreen = () => {
   return (
-    <View>
+    <MainContainer>
       <Header name="Acceuil" />
       <ScrollView>
         <Resume />
@@ -78,7 +79,7 @@ const HomeScreen = () => {
           />
         </View>
       </ScrollView>
-    </View>
+    </MainContainer>
   );
 };
 

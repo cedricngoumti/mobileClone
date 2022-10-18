@@ -1,25 +1,20 @@
 import React from "react";
-import { StyleSheet, TextInput, View } from "react-native";
+import { StyleSheet, TextInput, StyleProp, View } from "react-native";
 import { COLORS } from "../../../utils/Colors";
 import { AntDesign } from "@expo/vector-icons";
 import { windowHeight, windowWidth } from "../../../utils/Dimensions";
-
-interface Props {
-  labelValue: string;
-  placeholderText: string;
-  iconType: any;
-  onChangeText: (e: string) => void;
-}
+import { InputProps } from "../../../types/InputProps";
 
 const Input = ({
   labelValue,
   placeholderText,
   iconType,
+  style,
   onChangeText,
   ...rest
-}: Props) => {
+}: InputProps) => {
   return (
-    <View style={styles.inpuContainer}>
+    <View style={[styles.inpuContainer, style]}>
       <View style={styles.iconStyle}>
         <AntDesign name={iconType} size={25} color="#666" />
       </View>

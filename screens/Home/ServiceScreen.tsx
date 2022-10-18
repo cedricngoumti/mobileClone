@@ -2,16 +2,17 @@ import { ScrollView, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import Header from "../../components/layouts/Header";
 import Card from "../../components/layouts/Card";
+import MainContainer from "../../components/layouts/MainContainer";
 
 const ServiceScreen = () => {
   return (
-    <View>
+    <MainContainer>
       <Header
         name="Services"
         searchFilter={{
-          filterType: "Automobile",
-          iconSearch: "car-rental",
-          placeholder: "Chercher par marque",
+          filterType: "services",
+          iconSearch: "services",
+          placeholder: "Chercher par service",
         }}
       />
       <ScrollView>
@@ -70,7 +71,7 @@ const ServiceScreen = () => {
           />
         </View>
       </ScrollView>
-    </View>
+    </MainContainer>
   );
 };
 

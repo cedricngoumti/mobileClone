@@ -18,6 +18,22 @@ const Button = ({ title, onPress }: Props) => {
   );
 };
 
+export const ButtonOutline = ({ title, onPress }: Props) => {
+  return (
+    <View style={styles.container}>
+      <TouchableOpacity
+        style={[
+          styles.butonOutlineContainer,
+          { borderWidth: 0.3, borderColor: COLORS.white },
+        ]}
+        onPress={onPress}
+      >
+        <Text style={styles.buttonText}>{title}</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
+
 export default Button;
 
 const styles = StyleSheet.create({
@@ -25,11 +41,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     width: "100%",
     zIndex: 5,
-    paddingBottom: windowHeight * 0.08,
-    height: windowHeight * 0.15,
+    height: windowHeight * 0.08,
   },
   butonContainer: {
     backgroundColor: COLORS.accent,
+    marginTop: 10,
+    width: "100%",
+    height: "100%",
+    paddingHorizontal: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 3,
+  },
+  butonOutlineContainer: {
+    backgroundColor: COLORS.primary,
     marginTop: 10,
     width: "100%",
     height: "100%",
