@@ -1,5 +1,13 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
-import React, { useContext, useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  Keyboard,
+} from "react-native";
+import React, { useContext, useState, useEffect } from "react";
 import { COLORS } from "../../utils/Colors";
 import { windowHeight, windowWidth } from "../../utils/Dimensions";
 import Svg, { Path } from "react-native-svg";
@@ -15,6 +23,28 @@ const Login = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isConnecting, setIsConnecting] = useState(false);
+
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      () => {
+        setKeyboardVisible(true); // or some other action
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      () => {
+        setKeyboardVisible(false); // or some other action
+      }
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
 
   const signIn = async () => {
     if (email) {
@@ -43,7 +73,7 @@ const Login = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.main}>
         <View
           style={{
@@ -71,34 +101,44 @@ const Login = () => {
             placeholderText={"mot de passe"}
             iconType={"lock"}
             onChangeText={setPassword}
+            secureTextEntry
           />
-          <Button title="Connexion" onPress={() => signIn()} />
+          <View
+            style={{
+              paddingBottom: 25,
+            }}
+          >
+            <Button title="Connexion" onPress={() => signIn()} />
+          </View>
         </View>
         <TouchableOpacity onPress={() => navigation.navigate("Register")}>
           <Text style={styles.forgotButton}>je n'ai pas encore de compte?</Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.bottom}>
-        <View style={styles.box}>
-          <Svg
-            height={200}
-            width={windowWidth}
-            viewBox="0 0 1440 320"
-            style={styles.bottomWavy}
-          >
-            <Path
-              fill={COLORS.white}
-              d="M0,64L40,96C80,128,160,192,240,202.7C320,213,400,171,480,149.3C560,128,640,128,720,154.7C800,181,880,235,960,218.7C1040,203,1120,117,1200,74.7C1280,32,1360,32,1400,32L1440,32L1440,320L1400,320C1360,320,1280,320,1200,320C1120,320,1040,320,960,320C880,320,800,320,720,320C640,320,560,320,480,320C400,320,320,320,240,320C160,320,80,320,40,320L0,320Z"
+
+      {!isKeyboardVisible && (
+        <View style={styles.bottom}>
+          <View style={styles.box}>
+            <Svg
+              height={200}
+              width={windowWidth}
+              viewBox="0 0 1440 320"
+              style={styles.bottomWavy}
+            >
+              <Path
+                fill={COLORS.white}
+                d="M0,64L40,96C80,128,160,192,240,202.7C320,213,400,171,480,149.3C560,128,640,128,720,154.7C800,181,880,235,960,218.7C1040,203,1120,117,1200,74.7C1280,32,1360,32,1400,32L1440,32L1440,320L1400,320C1360,320,1280,320,1200,320C1120,320,1040,320,960,320C880,320,800,320,720,320C640,320,560,320,480,320C400,320,320,320,240,320C160,320,80,320,40,320L0,320Z"
+              />
+            </Svg>
+            <Image
+              source={require("../../assets/images/smobilpaylogo.png")}
+              resizeMode={"contain"}
+              style={styles.logoBottom}
             />
-          </Svg>
-          <Image
-            source={require("../../assets/images/smobilpaylogo.png")}
-            resizeMode={"contain"}
-            style={styles.logoBottom}
-          />
+          </View>
         </View>
-      </View>
-    </View>
+      )}
+    </ScrollView>
   );
 };
 
@@ -114,6 +154,7 @@ const styles = StyleSheet.create({
     paddingTop: 25,
     flex: 0.6,
     justifyContent: "center",
+    zIndex: 10,
   },
   text: {
     width: "100%",

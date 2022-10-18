@@ -4,11 +4,12 @@ import Header from "../../components/layouts/Header";
 import ListItem from "../../components/layouts/ListItem";
 import Button from "../../components/elements/Buttons";
 import { AuthContext } from "../../navigation/AuthProvider";
+import MainContainer from "../../components/layouts/MainContainer";
 
 const AccountScreen = () => {
   const { logout } = useContext(AuthContext);
   return (
-    <View>
+    <MainContainer>
       <Header name="Compte" />
       <ScrollView>
         <View
@@ -19,7 +20,7 @@ const AccountScreen = () => {
           <Button title="Sign out" onPress={() => logout()} />
         </View>
       </ScrollView>
-    </View>
+    </MainContainer>
   );
 };
 

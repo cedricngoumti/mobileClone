@@ -104,8 +104,13 @@ const RegisterScreen = () => {
             labelValue={confirmPassword}
             onChangeText={setConfirmPassword}
           />
-
-          <Button title="Valider" onPress={() => register()} />
+          <View
+            style={{
+              paddingBottom: 25,
+            }}
+          >
+            <Button title="Valider" onPress={() => register()} />
+          </View>
         </View>
         <TouchableOpacity onPress={() => navigation.navigate("Login")}>
           <Text style={styles.forgotButton}>Je possède déjà un compte!</Text>
