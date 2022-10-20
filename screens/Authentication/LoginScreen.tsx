@@ -16,6 +16,7 @@ import Button from "../../components/elements/Buttons";
 import { showMessage } from "react-native-flash-message";
 import { useNavigation } from "@react-navigation/native";
 import { AuthContext } from "../../navigation/AuthProvider";
+import fetchApi from "../../api/fetchApi";
 
 const Login = () => {
   const { login } = useContext(AuthContext);
@@ -51,8 +52,30 @@ const Login = () => {
       setIsConnecting(true);
 
       if (password) {
-        setIsConnecting(false);
-        login({ email, password });
+        fetchApi()
+          .login({
+            email,
+            password,
+          })
+          .then((t) => {
+            if (t.token) {
+              login(t);
+            } else {
+              showMessage({
+                message: "Error",
+                description: t.error,
+                type: "danger",
+              });
+            }
+          })
+          .catch((err) => {
+            showMessage({
+              message: "Erreur",
+              description: "une erreure est survenue ",
+              type: "danger",
+            });
+          })
+          .finally(() => setIsConnecting(false));
       } else {
         setIsConnecting(false);
 
@@ -108,7 +131,11 @@ const Login = () => {
               paddingBottom: 25,
             }}
           >
-            <Button title="Connexion" onPress={() => signIn()} />
+            {isConnecting ? (
+              <Button title="Connexion..." onPress={() => null} />
+            ) : (
+              <Button title="Connexion" onPress={() => signIn()} />
+            )}
           </View>
         </View>
         <TouchableOpacity onPress={() => navigation.navigate("Register")}>

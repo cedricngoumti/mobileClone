@@ -3,13 +3,16 @@ import React, { useContext } from "react";
 import { COLORS } from "../../../utils/Colors";
 import { windowWidth } from "../../../utils/Dimensions";
 import { AuthContext } from "../../../navigation/AuthProvider";
+import { Service } from "../../../model/Service";
+import { useNavigation } from "@react-navigation/native";
 
 interface Props {
-  name: string;
-  image: string;
+  item: Service;
 }
 
-const Card = ({ name, image }: Props) => {
+const Card = ({ item }: Props) => {
+  const navigation = useNavigation<any>();
+
   return (
     <TouchableOpacity
       style={{
@@ -21,7 +24,11 @@ const Card = ({ name, image }: Props) => {
         justifyContent: "center",
         alignItems: "center",
       }}
-      onPress={() => null}
+      onPress={() =>
+        navigation.navigate("Operator", {
+          item: item,
+        })
+      }
     >
       <View
         style={{
@@ -35,8 +42,32 @@ const Card = ({ name, image }: Props) => {
           marginBottom: 8,
         }}
       >
+        {item.promotion > 0 && (
+          <View
+            style={{
+              position: "absolute",
+              right: -5,
+              top: -10,
+              backgroundColor: COLORS.primary,
+              borderRadius: 10,
+              justifyContent: "center",
+              alignItems: "center",
+              padding: 8,
+              zIndex: 10,
+            }}
+          >
+            <Text
+              style={{
+                color: COLORS.white,
+                fontSize: 14,
+              }}
+            >
+              -{item.promotion}%
+            </Text>
+          </View>
+        )}
         <Image
-          source={{ uri: image }}
+          source={{ uri: item.image }}
           style={{
             width: "100%",
             height: 100,
@@ -47,7 +78,7 @@ const Card = ({ name, image }: Props) => {
           resizeMode="cover"
         />
       </View>
-      <Text style={styles.productName}>{name}</Text>
+      <Text style={styles.productName}>{item.name}</Text>
     </TouchableOpacity>
   );
 };

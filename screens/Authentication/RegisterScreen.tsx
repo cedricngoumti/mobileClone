@@ -15,6 +15,7 @@ import Input from "../../components/elements/Inputs";
 import Button from "../../components/elements/Buttons";
 import { AuthContext } from "../../navigation/AuthProvider";
 import { showMessage } from "react-native-flash-message";
+import fetchApi from "../../api/fetchApi";
 
 const RegisterScreen = () => {
   const navigation = useNavigation<any>();
@@ -23,6 +24,7 @@ const RegisterScreen = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [isConnecting, setIsConnecting] = useState(false);
 
   const { login } = useContext(AuthContext);
 
@@ -31,7 +33,44 @@ const RegisterScreen = () => {
       if (email) {
         if (password) {
           if (password === confirmPassword) {
-            login({ email, password });
+            setIsConnecting(true);
+
+            fetchApi()
+              .register({
+                email,
+                password,
+                confirm_password: confirmPassword,
+              })
+              .then((e) => {
+                if (e.error) {
+                  showMessage({
+                    message: "Erreur",
+                    description: e.messages.message,
+                    type: "danger",
+                  });
+                } else {
+                  fetchApi()
+                    .login({
+                      email,
+                      password,
+                    })
+                    .then((t) => {
+                      if (t.token) {
+                        login(t);
+                      } else {
+                        showMessage({
+                          message: "Error",
+                          description: t.error,
+                          type: "danger",
+                        });
+                      }
+                    });
+
+                  //login({ email, password });
+                }
+              })
+              .catch((e) => console.log("erreur", e))
+              .finally(() => setIsConnecting(false));
           } else {
             showMessage({
               message: "Erreur",
@@ -96,6 +135,7 @@ const RegisterScreen = () => {
             iconType={"lock"}
             labelValue={password}
             onChangeText={setPassword}
+            secureTextEntry
           />
 
           <Input
@@ -103,13 +143,18 @@ const RegisterScreen = () => {
             iconType={"lock"}
             labelValue={confirmPassword}
             onChangeText={setConfirmPassword}
+            secureTextEntry
           />
           <View
             style={{
               paddingBottom: 25,
             }}
           >
-            <Button title="Valider" onPress={() => register()} />
+            {isConnecting ? (
+              <Button title="enregistrement..." onPress={() => null} />
+            ) : (
+              <Button title="Valider" onPress={() => register()} />
+            )}
           </View>
         </View>
         <TouchableOpacity onPress={() => navigation.navigate("Login")}>
