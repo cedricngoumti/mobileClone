@@ -1,10 +1,14 @@
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { COLORS } from "../../../utils/Colors";
 import { windowHeight, windowWidth } from "../../../utils/Dimensions";
 import { FontAwesome } from "@expo/vector-icons";
+import { AuthContext } from "../../../navigation/AuthProvider";
+import { formatAmount } from "../../../utils/misc";
 
 const Resume = () => {
+  const { user, refreshUser } = useContext(AuthContext);
+
   return (
     <View style={styles.container}>
       <View
@@ -18,16 +22,29 @@ const Resume = () => {
       >
         <View>
           <View style={{ paddingBottom: 10 }}>
-            <Text style={styles.text}>Solde SmobilPay</Text>
-            <Text style={styles.solde}>XAF 3,700.00</Text>
-            <Text style={styles.description}>XAF 255.00 commissions</Text>
+            <Text style={styles.text}>Balance SmobilPay</Text>
+            <Text style={styles.solde}>
+              {user?.smobilmoney
+                ? formatAmount(user?.smobilmoney)
+                : "____ ____ ____"}
+            </Text>
+            <Text style={styles.description}>
+              {" "}
+              {user?.comission
+                ? formatAmount(user?.comission) + "commissions"
+                : "____ ____ ____"}
+            </Text>
           </View>
           <View style={{ paddingVertical: 10 }}>
-            <Text style={styles.text}>Solde Agen bancaire</Text>
-            <Text style={styles.solde}>--- ---- ---- ----</Text>
+            <Text style={styles.text}>Balance Agent bank</Text>
+            <Text style={styles.solde}>
+              {user?.bankmoney
+                ? formatAmount(user.bankmoney)
+                : "____ ____ ____"}
+            </Text>
           </View>
         </View>
-        <TouchableOpacity activeOpacity={0.8}>
+        <TouchableOpacity activeOpacity={0.8} onPress={() => refreshUser()}>
           <FontAwesome name="refresh" size={24} color={COLORS.primary} />
         </TouchableOpacity>
       </View>

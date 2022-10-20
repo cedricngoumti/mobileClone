@@ -2,6 +2,7 @@ import React, { createContext, ReactNode, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { showMessage } from "react-native-flash-message";
 import { User } from "../model/User";
+import fetchApi from "../api/fetchApi";
 
 export interface AuthContextInterface {
   user: User | null;
@@ -10,6 +11,7 @@ export interface AuthContextInterface {
   login: any;
   logout: () => void;
   startApp: () => void;
+  refreshUser: () => void;
 }
 
 export const authContextDefaults: AuthContextInterface = {
@@ -19,6 +21,7 @@ export const authContextDefaults: AuthContextInterface = {
   login: () => {},
   logout: () => {},
   startApp: () => {},
+  refreshUser: () => {},
 };
 
 export const AuthContext =
@@ -44,17 +47,27 @@ export function AuthProvider({ children }: Props) {
     } catch (error) {}
   };
 
+  const refreshUser = () => {
+    fetchApi(`login/me`)
+      .get(`?id=${user?.id}`)
+      .then((e) => {
+        setUser(e.data);
+        console.log("refresh", e.data);
+      });
+  };
+
   const login = async (e: any) => {
-    const userObject = JSON.stringify(e);
+    const userObject = JSON.stringify(e.user);
     setIsLoading(true);
     try {
       await AsyncStorage.setItem("@smobilepay_Auth:user", userObject);
-      setUser(e);
+      await AsyncStorage.setItem("@smobilepay_Auth:jwt", e.token);
+      setUser(e.user);
     } catch (e) {}
     setTimeout(() => {
       showMessage({
         message: "Parfait",
-        description: "Bienvenue, " + e.email,
+        description: "Bienvenue, ",
         type: "success",
       });
       setIsLoading(false);
@@ -65,6 +78,7 @@ export function AuthProvider({ children }: Props) {
     setIsLoading(true);
     AsyncStorage.removeItem("@smobilepay_Auth:user").then(() => {
       try {
+        AsyncStorage.removeItem("@smobilepay_Auth:jwt");
         setUser(null);
       } catch (e) {
         console.log(e);
@@ -81,12 +95,18 @@ export function AuthProvider({ children }: Props) {
       const storagedUser = await AsyncStorage.getItem("@smobilepay_Auth:user");
       if (storagedUser) {
         const userDataLocal = JSON.parse(storagedUser);
-        setUser(userDataLocal);
+        fetchApi(`login/me`)
+          .get(`?id=${userDataLocal.id}`)
+          .then((e) => {
+            if (e.data) setUser(e.data);
+          });
       } else {
         const started = await AsyncStorage.getItem("is_started");
         if (started) setOnLauched(true);
       }
-      setIsLoading(false);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 2000);
     };
 
     loadLocalUser();
@@ -100,6 +120,7 @@ export function AuthProvider({ children }: Props) {
       login,
       logout,
       startApp,
+      refreshUser,
     }),
     [user, isLoading, onLauched]
   );

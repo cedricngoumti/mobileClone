@@ -12,6 +12,9 @@ import HomeScreen from "../screens/Home/HomeScreen";
 import ServiceScreen from "../screens/Home/ServiceScreen";
 import { Text } from "react-native";
 import AccountScreen from "../screens/Home/AccountScreen";
+import SettingScreen from "../screens/Home/SettingScreen";
+import HistoryScreen from "../screens/Home/HistoryScreen";
+import OperatorScreen from "../screens/Operator/OperatorScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -41,7 +44,7 @@ function MyTabs() {
           headerShown: false,
           tabBarIcon: ({ color, focused }) =>
             focused ? (
-              <Entypo name={"home"} color={color} size={34} />
+              <Entypo name={"home"} color={color} size={26} />
             ) : (
               <AntDesign name={"home"} color={color} size={24} />
             ),
@@ -54,7 +57,7 @@ function MyTabs() {
           headerShown: false,
           tabBarIcon: ({ color, focused }) =>
             focused ? (
-              <FontAwesome name="user-circle" size={34} color={color} />
+              <FontAwesome name="user-circle" size={26} color={color} />
             ) : (
               <FontAwesome name="user-circle-o" color={color} size={24} />
             ),
@@ -67,7 +70,7 @@ function MyTabs() {
           headerShown: false,
           tabBarIcon: ({ color, focused }) =>
             focused ? (
-              <Entypo name="shopping-cart" color={color} size={34} />
+              <Entypo name="shopping-cart" color={color} size={26} />
             ) : (
               <AntDesign name="shoppingcart" color={color} size={24} />
             ),
@@ -75,12 +78,12 @@ function MyTabs() {
       />
       <Tab.Screen
         name="historiques"
-        component={HomeScreen}
+        component={HistoryScreen}
         options={{
           headerShown: false,
           tabBarIcon: ({ color, focused }) =>
             focused ? (
-              <AntDesign name="areachart" color={color} size={34} />
+              <AntDesign name="areachart" color={color} size={26} />
             ) : (
               <AntDesign name="areachart" color={color} size={24} />
             ),
@@ -88,13 +91,13 @@ function MyTabs() {
       />
 
       <Tab.Screen
-        name="Plus"
-        component={HomeScreen}
+        name="parrametres"
+        component={SettingScreen}
         options={{
           headerShown: false,
           tabBarIcon: ({ color, focused }) =>
             focused ? (
-              <MaterialIcons name="more-vert" color={color} size={34} />
+              <MaterialIcons name="more-vert" color={color} size={26} />
             ) : (
               <MaterialIcons name="more-vert" color={color} size={24} />
             ),
@@ -109,6 +112,13 @@ function AuthStack() {
       <Stack.Screen
         name="Home"
         component={MyTabs}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Operator"
+        component={OperatorScreen}
         options={{
           headerShown: false,
         }}
